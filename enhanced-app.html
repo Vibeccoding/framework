@@ -997,7 +997,7 @@
                     <h3>API Server Status</h3>
                     <div class="metric">
                         <span>Server URL:</span>
-                        <span class="metric-value">http://localhost:3000</span>
+                        <span class="metric-value">https://cognizant-neuro-transition-platform.vercel.app</span>
                     </div>
                     <div class="metric">
                         <span>Status:</span>
@@ -1097,25 +1097,25 @@
                                 <td>/api/dashboard</td>
                                 <td>GET</td>
                                 <td>Get dashboard statistics</td>
-                                <td>curl http://localhost:3000/api/dashboard</td>
+                                <td>curl https://cognizant-neuro-transition-platform.vercel.app/api/dashboard</td>
                             </tr>
                             <tr>
                                 <td>/api/assessments</td>
                                 <td>POST</td>
                                 <td>Create new assessment</td>
-                                <td>curl -X POST -H "Content-Type: application/json" -d '{"area":"Security"}' http://localhost:3000/api/assessments</td>
+                                <td>curl -X POST -H "Content-Type: application/json" -d '{"area":"Security"}' https://cognizant-neuro-transition-platform.vercel.app/api/assessments</td>
                             </tr>
                             <tr>
                                 <td>/api/trainings</td>
                                 <td>GET</td>
                                 <td>Get all training sessions</td>
-                                <td>curl http://localhost:3000/api/trainings</td>
+                                <td>curl https://cognizant-neuro-transition-platform.vercel.app/api/trainings</td>
                             </tr>
                             <tr>
                                 <td>/api/tickets</td>
                                 <td>PUT</td>
                                 <td>Update support ticket</td>
-                                <td>curl -X PUT -H "Content-Type: application/json" -d '{"status":"resolved"}' http://localhost:3000/api/tickets/TKT-001</td>
+                                <td>curl -X PUT -H "Content-Type: application/json" -d '{"status":"resolved"}' https://cognizant-neuro-transition-platform.vercel.app/api/tickets/TKT-001</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1825,7 +1825,7 @@
         function exportFeedback() { alert('Exporting feedback data to CSV...'); }
         
         // API Endpoints functions
-        const API_BASE = 'http://localhost:3000';
+        const API_BASE = 'https://cognizant-neuro-transition-platform.vercel.app';
         
         function checkApiStatus() {
             fetch(`${API_BASE}/api/dashboard`)
@@ -1844,7 +1844,7 @@
         }
         
         function startApiServer() {
-            alert('To start API server:\n1. Open terminal\n2. Navigate to project folder\n3. Run: npm install\n4. Run: npm start\n5. Server will start on http://localhost:3000');
+            alert('API Server is deployed on Vercel:\nhttps://cognizant-neuro-transition-platform.vercel.app\n\nFor local development:\n1. Run: npm install\n2. Run: npm start\n3. Local server: http://localhost:3000');
         }
         
         function testApi(endpoint, method) {
