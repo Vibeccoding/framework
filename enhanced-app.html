@@ -50,7 +50,11 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>Cognizant Neuro Transition Platform</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 14px;">Cognizant Neuro Transition Platform</h2>
+                <button class="btn" onclick="logout()" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Logout</button>
+            </div>
+            <div id="userInfo" style="margin-bottom: 15px; padding: 10px; background: #34495e; border-radius: 4px; font-size: 12px;"></div>
             <div class="nav-item active" onclick="showModule('dashboard')">Dashboard</div>
             <div class="nav-item" onclick="showModule('due-diligence')">Due Diligence</div>
             <div class="nav-item" onclick="showModule('knowledge-acquisition')">Knowledge Acquisition</div>
@@ -994,10 +998,25 @@
     </div>
 
     <script>
-        // Initialize charts
+        // Check authentication
         document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
             initCharts();
         });
+        
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userInfo').innerHTML = `Welcome, ${user.name}<br>Role: ${user.role}`;
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
 
         function initCharts() {
             // Phase Progress Chart

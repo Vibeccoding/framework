@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognizant Neuro Transition Platform - Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 400px; }
+        .logo { text-align: center; margin-bottom: 30px; color: #2c3e50; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        .btn { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-bottom: 15px; }
+        .btn:hover { background: #5a67d8; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #5a6268; }
+        .link { text-align: center; margin-top: 15px; }
+        .link a { color: #667eea; text-decoration: none; }
+        .link a:hover { text-decoration: underline; }
+        .error { color: #dc3545; font-size: 14px; margin-top: 5px; }
+        .success { color: #28a745; font-size: 14px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h2>Cognizant Neuro</h2>
+            <p>Transition Platform</p>
+        </div>
+        
+        <div id="loginForm">
+            <h3>Login</h3>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn" onclick="login()">Login</button>
+            <div class="link">
+                <a href="#" onclick="showSignup()">Don't have an account? Sign up</a>
+            </div>
+        </div>
+        
+        <div id="signupForm" style="display: none;">
+            <h3>Sign Up</h3>
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="signupName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="signupPassword" placeholder="Create a password">
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <select id="signupRole">
+                    <option>Project Manager</option>
+                    <option>Tech Lead</option>
+                    <option>Business Analyst</option>
+                    <option>Support Engineer</option>
+                    <option>Client</option>
+                </select>
+            </div>
+            <button class="btn" onclick="signup()">Sign Up</button>
+            <div class="link">
+                <a href="#" onclick="showLogin()">Already have an account? Login</a>
+            </div>
+        </div>
+        
+        <div id="message"></div>
+    </div>
+
+    <script>
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+        
+        function showLogin() {
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+        
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Check stored users
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showMessage('Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'enhanced-app.html';
+                }, 1500);
+            } else {
+                showMessage('Invalid email or password', 'error');
+            }
+        }
+        
+        function signup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const role = document.getElementById('signupRole').value;
+            
+            if (!name || !email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                showMessage('User already exists', 'error');
+                return;
+            }
+            
+            // Add new user
+            const newUser = { name, email, password, role, joinDate: new Date().toISOString() };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            showMessage('Account created successfully! Please login.', 'success');
+            setTimeout(() => {
+                showLogin();
+            }, 1500);
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${type}">${text}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
