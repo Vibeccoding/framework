@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognizant Neuro Transition Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { display: grid; grid-template-columns: 250px 1fr; height: 100vh; }
+        .sidebar { background: #2c3e50; color: white; padding: 20px; }
+        .sidebar h2 { margin-bottom: 20px; font-size: 18px; }
+        .nav-item { padding: 10px; margin: 5px 0; cursor: pointer; border-radius: 4px; }
+        .nav-item:hover, .nav-item.active { background: #34495e; }
+        .main { padding: 20px; overflow-y: auto; }
+        .module { display: none; }
+        .module.active { display: block; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .card h3 { color: #2c3e50; margin-bottom: 15px; }
+        .metric { display: flex; justify-content: space-between; margin: 10px 0; }
+        .metric-value { font-weight: bold; color: #27ae60; }
+        .status { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-green { background: #d4edda; color: #155724; }
+        .status-yellow { background: #fff3cd; color: #856404; }
+        .status-red { background: #f8d7da; color: #721c24; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; }
+        .progress-bar { width: 100%; height: 20px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #28a745; transition: width 0.3s; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .kpi-card { background: white; padding: 15px; border-radius: 6px; text-align: center; border-left: 4px solid #007bff; }
+        .kpi-value { font-size: 24px; font-weight: bold; color: #007bff; }
+        .kpi-label { font-size: 12px; color: #6c757d; margin-top: 5px; }
+        .chart-container { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .chart { width: 100%; height: 300px; background: #f8f9fa; border-radius: 4px; position: relative; }
+        .bar { background: #007bff; margin: 5px 0; border-radius: 2px; color: white; padding: 5px; }
+        .btn { background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+        .form-group { margin: 15px 0; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-content { background: white; margin: 50px auto; padding: 20px; width: 80%; max-width: 600px; border-radius: 8px; }
+        .close { float: right; font-size: 24px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Cognizant Neuro Platform</h2>
+            <div class="nav-item active" onclick="showModule('dashboard')">Dashboard</div>
+            <div class="nav-item" onclick="showModule('due-diligence')">Due Diligence</div>
+            <div class="nav-item" onclick="showModule('knowledge-acquisition')">Knowledge Acquisition</div>
+            <div class="nav-item" onclick="showModule('shadow')">Shadow & Reverse Shadow</div>
+            <div class="nav-item" onclick="showModule('stabilization')">Stabilization</div>
+            <div class="nav-item" onclick="showModule('steady-support')">Steady Support</div>
+        </div>
+        
+        <div class="main">
+            <!-- Dashboard Module -->
+            <div id="dashboard" class="module active">
+                <h1>Cognizant Neuro Transition Dashboard</h1>
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">78%</div>
+                        <div class="kpi-label">Overall Progress</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">95.2%</div>
+                        <div class="kpi-label">SLA Compliance</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">12</div>
+                        <div class="kpi-label">Active Issues</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">24</div>
+                        <div class="kpi-label">Days to Go-Live</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Phase Progress</h3>
+                        <div class="metric">
+                            <span>Due Diligence</span>
+                            <span class="status status-green">Complete</span>
+                        </div>
+                        <div class="metric">
+                            <span>Knowledge Acquisition</span>
+                            <span class="status status-yellow">85%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Shadow Phase</span>
+                            <span class="status status-yellow">60%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Stabilization</span>
+                            <span class="status status-red">Not Started</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Key Metrics</h3>
+                        <div class="metric">
+                            <span>Knowledge Transfer</span>
+                            <span class="metric-value">78%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Team Readiness</span>
+                            <span class="metric-value">65%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Risk Score</span>
+                            <span class="metric-value">Medium</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>SLA Performance</h3>
+                        <div class="metric">
+                            <span>Availability</span>
+                            <span class="metric-value">99.8%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Response Time</span>
+                            <span class="metric-value">1.2s</span>
+                        </div>
+                        <div class="metric">
+                            <span>Resolution Time</span>
+                            <span class="metric-value">4.5h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Due Diligence Module -->
+            <div id="due-diligence" class="module">
+                <h1>Due Diligence</h1>
+                <div class="card">
+                    <h3>Assessment Status</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Status</th>
+                                <th>Score</th>
+                                <th>Issues</th>
+                                <th>Owner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Technical Architecture</td>
+                                <td><span class="status status-green">Complete</span></td>
+                                <td>85/100</td>
+                                <td>2</td>
+                                <td>Tech Lead</td>
+                            </tr>
+                            <tr>
+                                <td>Security Assessment</td>
+                                <td><span class="status status-green">Complete</span></td>
+                                <td>92/100</td>
+                                <td>1</td>
+                                <td>Security Team</td>
+                            </tr>
+                            <tr>
+                                <td>Process Documentation</td>
+                                <td><span class="status status-yellow">In Progress</span></td>
+                                <td>70/100</td>
+                                <td>5</td>
+                                <td>BA Team</td>
+                            </tr>
+                            <tr>
+                                <td>Infrastructure Review</td>
+                                <td><span class="status status-green">Complete</span></td>
+                                <td>88/100</td>
+                                <td>3</td>
+                                <td>DevOps</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Knowledge Acquisition Module -->
+            <div id="knowledge-acquisition" class="module">
+                <h1>Knowledge Acquisition</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Training Progress</h3>
+                        <div class="metric">
+                            <span>Technical Training</span>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <span>Business Process</span>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div>
+                        </div>
+                        <div class="metric">
+                            <span>Domain Knowledge</span>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Knowledge Artifacts</h3>
+                        <div class="metric">
+                            <span>Documentation</span>
+                            <span class="status status-green">Complete</span>
+                        </div>
+                        <div class="metric">
+                            <span>Training Materials</span>
+                            <span class="status status-yellow">80%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Process Guides</span>
+                            <span class="status status-yellow">65%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shadow & Reverse Shadow Module -->
+            <div id="shadow" class="module">
+                <h1>Shadow & Reverse Shadow</h1>
+                <div class="card">
+                    <h3>Shadow Activities</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Phase</th>
+                                <th>Progress</th>
+                                <th>Shadower</th>
+                                <th>Expert</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Production Support</td>
+                                <td>Shadow</td>
+                                <td>75%</td>
+                                <td>John Doe</td>
+                                <td>Expert A</td>
+                            </tr>
+                            <tr>
+                                <td>Incident Management</td>
+                                <td>Reverse Shadow</td>
+                                <td>60%</td>
+                                <td>Jane Smith</td>
+                                <td>Expert B</td>
+                            </tr>
+                            <tr>
+                                <td>Change Management</td>
+                                <td>Shadow</td>
+                                <td>45%</td>
+                                <td>Mike Johnson</td>
+                                <td>Expert C</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stabilization Module -->
+            <div id="stabilization" class="module">
+                <h1>Stabilization</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Stabilization Metrics</h3>
+                        <div class="metric">
+                            <span>System Stability</span>
+                            <span class="metric-value">98.5%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Performance</span>
+                            <span class="metric-value">Good</span>
+                        </div>
+                        <div class="metric">
+                            <span>Error Rate</span>
+                            <span class="metric-value">0.2%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Issues Tracking</h3>
+                        <div class="metric">
+                            <span>Critical Issues</span>
+                            <span class="status status-red">2</span>
+                        </div>
+                        <div class="metric">
+                            <span>High Priority</span>
+                            <span class="status status-yellow">5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Medium Priority</span>
+                            <span class="status status-green">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steady Support Module -->
+            <div id="steady-support" class="module">
+                <h1>Steady Support</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Support Metrics</h3>
+                        <div class="metric">
+                            <span>Ticket Volume</span>
+                            <span class="metric-value">45/day</span>
+                        </div>
+                        <div class="metric">
+                            <span>First Call Resolution</span>
+                            <span class="metric-value">78%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Customer Satisfaction</span>
+                            <span class="metric-value">4.2/5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Team Performance</h3>
+                        <div class="metric">
+                            <span>Team Utilization</span>
+                            <span class="metric-value">85%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Knowledge Score</span>
+                            <span class="metric-value">92%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Escalation Rate</span>
+                            <span class="metric-value">12%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModule(moduleId) {
+            // Hide all modules
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Show selected module
+            document.getElementById(moduleId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
