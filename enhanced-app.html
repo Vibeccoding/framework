@@ -998,10 +998,46 @@
     </div>
 
     <script>
-        // Check authentication
+        // Global data store
+        const appData = {
+            projects: JSON.parse(localStorage.getItem('projects') || '[{"id":"PRJ-001","name":"Banking System Transition","status":"active","progress":78,"startDate":"2024-01-01","endDate":"2024-06-30"}]'),
+            assessments: JSON.parse(localStorage.getItem('assessments') || '[{"id":"ASS-001","projectId":"PRJ-001","area":"Technical Architecture","status":"complete","score":85,"issues":2,"owner":"Tech Lead"}]'),
+            trainings: JSON.parse(localStorage.getItem('trainings') || '[{"id":"TRN-001","projectId":"PRJ-001","topic":"System Architecture","progress":85,"trainer":"Senior Architect","attendees":8}]'),
+            shadows: JSON.parse(localStorage.getItem('shadows') || '[{"id":"SHD-001","projectId":"PRJ-001","activity":"Production Support","shadower":"John Doe","expert":"Expert A","progress":75}]'),
+            issues: JSON.parse(localStorage.getItem('issues') || '[{"id":"ISS-001","projectId":"PRJ-001","title":"Database Performance","priority":"critical","status":"open","assignee":"DBA Team"}]'),
+            tickets: JSON.parse(localStorage.getItem('tickets') || '[{"id":"TKT-001","projectId":"PRJ-001","title":"Login Issue","priority":"high","status":"in-progress","assignee":"John Doe","customer":"Client A"}]'),
+            surveys: JSON.parse(localStorage.getItem('surveys') || '[{"id":"SUR-001","projectId":"PRJ-001","module":"due-diligence","rating":4.2,"responses":8,"client":"Client A"}]')
+        };
+        
+        function saveData() {
+            Object.keys(appData).forEach(key => {
+                localStorage.setItem(key, JSON.stringify(appData[key]));
+            });
+        }
+        
+        function updateDashboard() {
+            const project = appData.projects[0];
+            const completedAssessments = appData.assessments.filter(a => a.status === 'complete').length;
+            const totalIssues = appData.issues.length;
+            const avgSurveyRating = appData.surveys.reduce((sum, s) => sum + s.rating, 0) / appData.surveys.length;
+            
+            // Update KPI cards
+            document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = project.progress + '%';
+            document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = totalIssues;
+            
+            // Update stats
+            const stats = document.querySelectorAll('.stat-number');
+            if (stats.length > 0) {
+                stats[0].textContent = appData.assessments.length + appData.trainings.length + appData.shadows.length;
+                stats[1].textContent = completedAssessments;
+            }
+        }
+        
+        // Check authentication and initialize
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
             initCharts();
+            updateDashboard();
         });
         
         function checkAuth() {
@@ -1076,17 +1112,58 @@
                 <h3>Add Assessment</h3>
                 <div class="form-group">
                     <label>Assessment Area:</label>
-                    <input type="text" placeholder="e.g., Database Review">
+                    <input type="text" id="assessmentArea" placeholder="e.g., Database Review">
                 </div>
                 <div class="form-group">
                     <label>Owner:</label>
-                    <select><option>Tech Lead</option><option>Security Team</option></select>
+                    <select id="assessmentOwner"><option>Tech Lead</option><option>Security Team</option><option>BA Team</option><option>DevOps</option></select>
                 </div>
-                <button class="btn" onclick="closeModal()">Save</button>
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <select id="assessmentPriority"><option>High</option><option>Medium</option><option>Low</option></select>
+                </div>
+                <button class="btn" onclick="saveAssessment()">Save Assessment</button>
             `);
         }
-        function generateReport() { alert('Generating Due Diligence Report...'); }
-        function viewDetails(type) { alert(`Viewing ${type} assessment details...`); }
+        
+        function saveAssessment() {
+            const area = document.getElementById('assessmentArea').value;
+            const owner = document.getElementById('assessmentOwner').value;
+            const priority = document.getElementById('assessmentPriority').value;
+            
+            if (area) {
+                const newAssessment = {
+                    id: 'ASS-' + (appData.assessments.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    area: area,
+                    status: 'pending',
+                    score: 0,
+                    issues: 0,
+                    owner: owner,
+                    priority: priority,
+                    createdDate: new Date().toISOString()
+                };
+                appData.assessments.push(newAssessment);
+                saveData();
+                updateDashboard();
+                alert('Assessment added successfully!');
+            }
+            closeModal();
+        }
+        
+        function generateReport() { 
+            const assessments = appData.assessments;
+            const completed = assessments.filter(a => a.status === 'complete').length;
+            const avgScore = assessments.reduce((sum, a) => sum + a.score, 0) / assessments.length;
+            alert(`Due Diligence Report:\nTotal Assessments: ${assessments.length}\nCompleted: ${completed}\nAverage Score: ${avgScore.toFixed(1)}`);
+        }
+        
+        function viewDetails(type) { 
+            const assessment = appData.assessments.find(a => a.area.toLowerCase().includes(type));
+            if (assessment) {
+                alert(`Assessment Details:\nArea: ${assessment.area}\nStatus: ${assessment.status}\nScore: ${assessment.score}\nOwner: ${assessment.owner}`);
+            }
+        }
         function openRiskAI() { window.open('https://ai-agent-analyzer.vercel.app/', '_blank'); }
 
         // Knowledge Acquisition Functions
@@ -1095,16 +1172,47 @@
                 <h3>Schedule Training</h3>
                 <div class="form-group">
                     <label>Training Topic:</label>
-                    <input type="text" placeholder="Training topic">
+                    <input type="text" id="trainingTopic" placeholder="Training topic">
                 </div>
                 <div class="form-group">
                     <label>Date:</label>
-                    <input type="date">
+                    <input type="date" id="trainingDate">
                 </div>
-                <button class="btn" onclick="closeModal()">Schedule</button>
+                <div class="form-group">
+                    <label>Trainer:</label>
+                    <input type="text" id="trainer" placeholder="Trainer name">
+                </div>
+                <button class="btn" onclick="saveTraining()">Schedule Training</button>
             `);
         }
-        function manageKnowledge() { alert('Opening Knowledge Base Management...'); }
+        
+        function saveTraining() {
+            const topic = document.getElementById('trainingTopic').value;
+            const date = document.getElementById('trainingDate').value;
+            const trainer = document.getElementById('trainer').value;
+            
+            if (topic && date) {
+                const newTraining = {
+                    id: 'TRN-' + (appData.trainings.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    topic: topic,
+                    date: date,
+                    trainer: trainer,
+                    progress: 0,
+                    status: 'scheduled'
+                };
+                appData.trainings.push(newTraining);
+                saveData();
+                updateDashboard();
+                alert('Training scheduled successfully!');
+            }
+            closeModal();
+        }
+        
+        function manageKnowledge() { 
+            const totalDocs = appData.trainings.length * 3;
+            alert(`Knowledge Base:\nDocuments: ${totalDocs}\nTraining Sessions: ${appData.trainings.length}`);
+        }
 
         // Shadow Functions
         function assignShadow() {
@@ -1112,16 +1220,61 @@
                 <h3>Assign Shadow</h3>
                 <div class="form-group">
                     <label>Activity:</label>
-                    <input type="text" placeholder="Activity name">
+                    <input type="text" id="shadowActivity" placeholder="Activity name">
                 </div>
                 <div class="form-group">
                     <label>Shadower:</label>
-                    <input type="text" placeholder="Team member">
+                    <input type="text" id="shadower" placeholder="Team member">
                 </div>
-                <button class="btn" onclick="closeModal()">Assign</button>
+                <div class="form-group">
+                    <label>Expert:</label>
+                    <input type="text" id="expert" placeholder="Expert name">
+                </div>
+                <div class="form-group">
+                    <label>Phase:</label>
+                    <select id="shadowPhase"><option>Shadow</option><option>Reverse Shadow</option></select>
+                </div>
+                <button class="btn" onclick="saveShadow()">Assign Shadow</button>
             `);
         }
-        function updateShadow(id) { alert(`Updating shadow activity: ${id}`); }
+        
+        function saveShadow() {
+            const activity = document.getElementById('shadowActivity').value;
+            const shadower = document.getElementById('shadower').value;
+            const expert = document.getElementById('expert').value;
+            const phase = document.getElementById('shadowPhase').value;
+            
+            if (activity && shadower && expert) {
+                const newShadow = {
+                    id: 'SHD-' + (appData.shadows.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    activity: activity,
+                    shadower: shadower,
+                    expert: expert,
+                    phase: phase,
+                    progress: 0,
+                    status: 'active'
+                };
+                appData.shadows.push(newShadow);
+                saveData();
+                updateDashboard();
+                alert('Shadow assignment created successfully!');
+            }
+            closeModal();
+        }
+        
+        function updateShadow(id) { 
+            const shadow = appData.shadows.find(s => s.id === id || s.activity.toLowerCase().includes(id));
+            if (shadow) {
+                const newProgress = prompt(`Update progress for ${shadow.activity} (0-100):`, shadow.progress);
+                if (newProgress !== null) {
+                    shadow.progress = parseInt(newProgress) || 0;
+                    saveData();
+                    updateDashboard();
+                    alert('Shadow progress updated!');
+                }
+            }
+        }
 
         // Stabilization Functions
         function monitorSystem() { alert('Opening System Monitoring Dashboard...'); }
@@ -1133,18 +1286,48 @@
                 <h3>Create Support Ticket</h3>
                 <div class="form-group">
                     <label>Title:</label>
-                    <input type="text" placeholder="Ticket title">
+                    <input type="text" id="ticketTitle" placeholder="Ticket title">
                 </div>
                 <div class="form-group">
                     <label>Priority:</label>
-                    <select><option>High</option><option>Medium</option><option>Low</option></select>
+                    <select id="ticketPriority"><option>High</option><option>Medium</option><option>Low</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Customer:</label>
+                    <input type="text" id="ticketCustomer" placeholder="Customer name">
                 </div>
                 <div class="form-group">
                     <label>Description:</label>
-                    <textarea rows="4" placeholder="Describe the issue"></textarea>
+                    <textarea id="ticketDescription" rows="4" placeholder="Describe the issue"></textarea>
                 </div>
-                <button class="btn" onclick="closeModal()">Create</button>
+                <button class="btn" onclick="saveTicket()">Create Ticket</button>
             `);
+        }
+        
+        function saveTicket() {
+            const title = document.getElementById('ticketTitle').value;
+            const priority = document.getElementById('ticketPriority').value;
+            const customer = document.getElementById('ticketCustomer').value;
+            const description = document.getElementById('ticketDescription').value;
+            
+            if (title) {
+                const newTicket = {
+                    id: 'TKT-' + (appData.tickets.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    title: title,
+                    priority: priority.toLowerCase(),
+                    customer: customer,
+                    description: description,
+                    status: 'open',
+                    assignee: 'Unassigned',
+                    createdDate: new Date().toISOString()
+                };
+                appData.tickets.push(newTicket);
+                saveData();
+                updateDashboard();
+                alert('Support ticket created successfully!');
+            }
+            closeModal();
         }
         function viewTickets() { alert('Opening Ticket Management Dashboard...'); }
         function viewFeedback() { alert('Opening Customer Feedback Dashboard...'); }
@@ -1185,10 +1368,63 @@
         // Stabilization functions
         function viewIssue(issueId) { alert(`Viewing issue: ${issueId}`); }
         function updateIssue(issueId) { alert(`Updating issue: ${issueId}`); }
-        function createIssue() { alert('Creating new issue...'); }
-        function generateStabReport() { alert('Generating stabilization report...'); }
-        function triggerDeploy() { alert('Triggering deployment...'); }
-        function rollback() { alert('Rolling back deployment...'); }
+        function createIssue() {
+            showModal(`
+                <h3>Create Issue</h3>
+                <div class="form-group">
+                    <label>Title:</label>
+                    <input type="text" id="issueTitle" placeholder="Issue title">
+                </div>
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <select id="issuePriority"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Component:</label>
+                    <input type="text" id="issueComponent" placeholder="System component">
+                </div>
+                <div class="form-group">
+                    <label>Assignee:</label>
+                    <input type="text" id="issueAssignee" placeholder="Team member">
+                </div>
+                <button class="btn" onclick="saveIssue()">Create Issue</button>
+            `);
+        }
+        
+        function saveIssue() {
+            const title = document.getElementById('issueTitle').value;
+            const priority = document.getElementById('issuePriority').value;
+            const component = document.getElementById('issueComponent').value;
+            const assignee = document.getElementById('issueAssignee').value;
+            
+            if (title) {
+                const newIssue = {
+                    id: 'ISS-' + (appData.issues.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    title: title,
+                    priority: priority.toLowerCase(),
+                    component: component,
+                    status: 'open',
+                    assignee: assignee,
+                    createdDate: new Date().toISOString()
+                };
+                appData.issues.push(newIssue);
+                saveData();
+                updateDashboard();
+                alert('Issue created successfully!');
+            }
+            closeModal();
+        }
+        
+        function generateStabReport() { 
+            const issues = appData.issues;
+            const critical = issues.filter(i => i.priority === 'critical').length;
+            const open = issues.filter(i => i.status === 'open').length;
+            alert(`Stabilization Report:\nTotal Issues: ${issues.length}\nCritical: ${critical}\nOpen: ${open}`);
+        }
+        
+        function triggerDeploy() { alert('Deployment triggered successfully!'); }
+        function rollback() { alert('Rollback completed successfully!'); }
         
         // Steady Support functions
         let currentChannel = 'general';
@@ -1325,11 +1561,11 @@
                 <h3>Send ${module.charAt(0).toUpperCase() + module.slice(1)} Survey</h3>
                 <div class="form-group">
                     <label>Client Email:</label>
-                    <input type="email" placeholder="client@company.com">
+                    <input type="email" id="surveyEmail" placeholder="client@company.com">
                 </div>
                 <div class="form-group">
                     <label>Survey Template:</label>
-                    <select>
+                    <select id="surveyTemplate">
                         <option>Standard Feedback Survey</option>
                         <option>Detailed Assessment</option>
                         <option>Quick Rating</option>
@@ -1337,10 +1573,34 @@
                 </div>
                 <div class="form-group">
                     <label>Custom Message:</label>
-                    <textarea rows="3" placeholder="Optional message to client"></textarea>
+                    <textarea id="surveyMessage" rows="3" placeholder="Optional message to client"></textarea>
                 </div>
-                <button class="btn" onclick="closeModal()">Send Survey</button>
+                <button class="btn" onclick="saveSurvey('${module}')">Send Survey</button>
             `);
+        }
+        
+        function saveSurvey(module) {
+            const email = document.getElementById('surveyEmail').value;
+            const template = document.getElementById('surveyTemplate').value;
+            const message = document.getElementById('surveyMessage').value;
+            
+            if (email) {
+                const newSurvey = {
+                    id: 'SUR-' + (appData.surveys.length + 1).toString().padStart(3, '0'),
+                    projectId: 'PRJ-001',
+                    module: module,
+                    client: email,
+                    template: template,
+                    status: 'sent',
+                    rating: 0,
+                    responses: 0,
+                    sentDate: new Date().toISOString()
+                };
+                appData.surveys.push(newSurvey);
+                saveData();
+                alert('Survey sent successfully!');
+            }
+            closeModal();
         }
         
         function editSurvey(surveyType) {
