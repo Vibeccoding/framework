@@ -23,9 +23,15 @@ A comprehensive web-based platform for managing vendor transitions with AI-power
 
 ## Quick Start
 
+### Web Application
 1. Clone the repository
 2. Open `enhanced-app.html` in a web browser
 3. Or run with Python server: `python server-enhanced.py`
+
+### REST API Server
+1. Run `start-api.bat` or `npm start`
+2. API available at `http://localhost:3000`
+3. Test endpoints via "API Endpoints" module in web app
 
 ## Technology Stack
 - HTML5, CSS3, JavaScript
