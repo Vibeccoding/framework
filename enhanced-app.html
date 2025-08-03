@@ -58,6 +58,7 @@
             <div class="nav-item" onclick="showModule('stabilization')">Stabilization</div>
             <div class="nav-item" onclick="showModule('steady-support')">Steady Support</div>
             <div class="nav-item" onclick="showModule('reports')">Reports</div>
+            <div class="nav-item" onclick="showModule('client-survey')">Client Survey</div>
         </div>
         
         <div class="main">
@@ -812,6 +813,175 @@
                     </table>
                 </div>
             </div>
+            
+            <!-- Client Survey Module -->
+            <div id="client-survey" class="module">
+                <h1>Client Survey</h1>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Due Diligence Feedback</h3>
+                        <div class="metric">
+                            <span>Average Rating</span>
+                            <span class="metric-value">4.2/5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Responses</span>
+                            <span class="metric-value">8</span>
+                        </div>
+                        <button class="btn" onclick="viewFeedback('due-diligence')">View Feedback</button>
+                        <button class="btn" onclick="sendSurvey('due-diligence')">Send Survey</button>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Knowledge Acquisition Feedback</h3>
+                        <div class="metric">
+                            <span>Average Rating</span>
+                            <span class="metric-value">4.5/5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Responses</span>
+                            <span class="metric-value">12</span>
+                        </div>
+                        <button class="btn" onclick="viewFeedback('knowledge-acquisition')">View Feedback</button>
+                        <button class="btn" onclick="sendSurvey('knowledge-acquisition')">Send Survey</button>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Shadow & Reverse Shadow Feedback</h3>
+                        <div class="metric">
+                            <span>Average Rating</span>
+                            <span class="metric-value">4.0/5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Responses</span>
+                            <span class="metric-value">6</span>
+                        </div>
+                        <button class="btn" onclick="viewFeedback('shadow')">View Feedback</button>
+                        <button class="btn" onclick="sendSurvey('shadow')">Send Survey</button>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Stabilization Feedback</h3>
+                        <div class="metric">
+                            <span>Average Rating</span>
+                            <span class="metric-value">3.8/5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Responses</span>
+                            <span class="metric-value">4</span>
+                        </div>
+                        <button class="btn" onclick="viewFeedback('stabilization')">View Feedback</button>
+                        <button class="btn" onclick="sendSurvey('stabilization')">Send Survey</button>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Steady Support Feedback</h3>
+                        <div class="metric">
+                            <span>Average Rating</span>
+                            <span class="metric-value">4.3/5</span>
+                        </div>
+                        <div class="metric">
+                            <span>Responses</span>
+                            <span class="metric-value">15</span>
+                        </div>
+                        <button class="btn" onclick="viewFeedback('steady-support')">View Feedback</button>
+                        <button class="btn" onclick="sendSurvey('steady-support')">Send Survey</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Survey Templates</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Module</th><th>Template</th><th>Questions</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Due Diligence</td>
+                                <td>DD Assessment Survey</td>
+                                <td>8</td>
+                                <td><span class="status status-green">Active</span></td>
+                                <td><button class="btn" onclick="editSurvey('dd')">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Knowledge Acquisition</td>
+                                <td>Training Feedback</td>
+                                <td>10</td>
+                                <td><span class="status status-green">Active</span></td>
+                                <td><button class="btn" onclick="editSurvey('ka')">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>Shadow Phase</td>
+                                <td>Mentoring Survey</td>
+                                <td>6</td>
+                                <td><span class="status status-yellow">Draft</span></td>
+                                <td><button class="btn" onclick="editSurvey('shadow')">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn" onclick="createSurvey()">Create Survey</button>
+                </div>
+                
+                <div class="card">
+                    <h3>Recent Feedback</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Module</th><th>Client</th><th>Rating</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Jan 22, 2024</td>
+                                <td>Steady Support</td>
+                                <td>Client A</td>
+                                <td>5/5</td>
+                                <td><span class="status status-green">Complete</span></td>
+                                <td><button class="btn" onclick="viewResponse('ss-001')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Jan 20, 2024</td>
+                                <td>Knowledge Acquisition</td>
+                                <td>Client B</td>
+                                <td>4/5</td>
+                                <td><span class="status status-green">Complete</span></td>
+                                <td><button class="btn" onclick="viewResponse('ka-002')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>Jan 18, 2024</td>
+                                <td>Due Diligence</td>
+                                <td>Client C</td>
+                                <td>3/5</td>
+                                <td><span class="status status-yellow">Partial</span></td>
+                                <td><button class="btn" onclick="followUp('dd-003')">Follow Up</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <h3>Survey Analytics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">4.2</div>
+                            <div class="stat-label">Overall Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">Total Responses</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">89%</div>
+                            <div class="stat-label">Response Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Active Surveys</div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="generateSurveyReport()">Generate Report</button>
+                    <button class="btn" onclick="exportFeedback()">Export Data</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1103,6 +1273,142 @@
         function viewReport(reportId) { alert(`Viewing report: ${reportId}`); }
         function resendReport(reportId) { alert(`Resending report: ${reportId}`); }
         function downloadReport(reportId) { alert(`Downloading report: ${reportId}`); }
+        
+        // Client Survey functions
+        function viewFeedback(module) {
+            showModal(`
+                <h3>${module.charAt(0).toUpperCase() + module.slice(1)} Feedback Summary</h3>
+                <div class="metric">
+                    <span>Excellent (5 stars):</span>
+                    <span class="metric-value">60%</span>
+                </div>
+                <div class="metric">
+                    <span>Good (4 stars):</span>
+                    <span class="metric-value">25%</span>
+                </div>
+                <div class="metric">
+                    <span>Average (3 stars):</span>
+                    <span class="metric-value">10%</span>
+                </div>
+                <div class="metric">
+                    <span>Poor (1-2 stars):</span>
+                    <span class="metric-value">5%</span>
+                </div>
+                <h4>Recent Comments:</h4>
+                <p>"Great communication throughout the process"</p>
+                <p>"Could improve response time"</p>
+                <button class="btn" onclick="closeModal()">Close</button>
+            `);
+        }
+        
+        function sendSurvey(module) {
+            showModal(`
+                <h3>Send ${module.charAt(0).toUpperCase() + module.slice(1)} Survey</h3>
+                <div class="form-group">
+                    <label>Client Email:</label>
+                    <input type="email" placeholder="client@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Survey Template:</label>
+                    <select>
+                        <option>Standard Feedback Survey</option>
+                        <option>Detailed Assessment</option>
+                        <option>Quick Rating</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Custom Message:</label>
+                    <textarea rows="3" placeholder="Optional message to client"></textarea>
+                </div>
+                <button class="btn" onclick="closeModal()">Send Survey</button>
+            `);
+        }
+        
+        function editSurvey(surveyType) {
+            showModal(`
+                <h3>Edit ${surveyType.toUpperCase()} Survey</h3>
+                <div class="form-group">
+                    <label>Survey Title:</label>
+                    <input type="text" value="${surveyType} Feedback Survey">
+                </div>
+                <div class="form-group">
+                    <label>Questions:</label>
+                    <textarea rows="6" placeholder="1. How satisfied are you with...\n2. Rate the quality of...\n3. Any suggestions for improvement?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Rating Scale:</label>
+                    <select>
+                        <option>1-5 Stars</option>
+                        <option>1-10 Scale</option>
+                        <option>Excellent/Good/Fair/Poor</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="closeModal()">Save Survey</button>
+            `);
+        }
+        
+        function createSurvey() {
+            showModal(`
+                <h3>Create New Survey</h3>
+                <div class="form-group">
+                    <label>Module:</label>
+                    <select>
+                        <option>Due Diligence</option>
+                        <option>Knowledge Acquisition</option>
+                        <option>Shadow & Reverse Shadow</option>
+                        <option>Stabilization</option>
+                        <option>Steady Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Survey Name:</label>
+                    <input type="text" placeholder="Survey name">
+                </div>
+                <div class="form-group">
+                    <label>Questions:</label>
+                    <textarea rows="5" placeholder="Enter survey questions"></textarea>
+                </div>
+                <button class="btn" onclick="closeModal()">Create Survey</button>
+            `);
+        }
+        
+        function viewResponse(responseId) {
+            showModal(`
+                <h3>Survey Response: ${responseId}</h3>
+                <div class="metric">
+                    <span>Overall Rating:</span>
+                    <span class="metric-value">4/5</span>
+                </div>
+                <h4>Detailed Feedback:</h4>
+                <p><strong>Q1:</strong> How satisfied are you with the service?</p>
+                <p><strong>A1:</strong> Very satisfied, great communication</p>
+                <p><strong>Q2:</strong> Any areas for improvement?</p>
+                <p><strong>A2:</strong> Faster response times would be helpful</p>
+                <button class="btn" onclick="closeModal()">Close</button>
+            `);
+        }
+        
+        function followUp(responseId) {
+            showModal(`
+                <h3>Follow Up: ${responseId}</h3>
+                <div class="form-group">
+                    <label>Follow-up Message:</label>
+                    <textarea rows="4" placeholder="Thank you for your feedback. We'd like to discuss..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Action Required:</label>
+                    <select>
+                        <option>Schedule Call</option>
+                        <option>Send Additional Survey</option>
+                        <option>Escalate to Manager</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="closeModal()">Send Follow-up</button>
+            `);
+        }
+        
+        function generateSurveyReport() { alert('Generating comprehensive survey analytics report...'); }
+        function exportFeedback() { alert('Exporting feedback data to CSV...'); }
     </script>
 </body>
 </html>
