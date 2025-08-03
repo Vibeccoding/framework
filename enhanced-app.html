@@ -42,6 +42,7 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
         .modal-content { background: white; margin: 50px auto; padding: 20px; width: 80%; max-width: 600px; border-radius: 8px; }
         .close { float: right; font-size: 24px; cursor: pointer; }
+        .api-result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; }
         .form-group { margin: 15px 0; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
@@ -63,6 +64,7 @@
             <div class="nav-item" onclick="showModule('steady-support')">Steady Support</div>
             <div class="nav-item" onclick="showModule('reports')">Reports</div>
             <div class="nav-item" onclick="showModule('client-survey')">Client Survey</div>
+            <div class="nav-item" onclick="showModule('api-endpoints')">API Endpoints</div>
         </div>
         
         <div class="main">
@@ -986,6 +988,139 @@
                     <button class="btn" onclick="exportFeedback()">Export Data</button>
                 </div>
             </div>
+            
+            <!-- API Endpoints Module -->
+            <div id="api-endpoints" class="module">
+                <h1>Consumer API Endpoints</h1>
+                
+                <div class="card">
+                    <h3>API Server Status</h3>
+                    <div class="metric">
+                        <span>Server URL:</span>
+                        <span class="metric-value">http://localhost:3000</span>
+                    </div>
+                    <div class="metric">
+                        <span>Status:</span>
+                        <span id="apiStatus" class="status status-red">Offline</span>
+                    </div>
+                    <button class="btn" onclick="checkApiStatus()">Check Status</button>
+                    <button class="btn" onclick="startApiServer()">Start Server</button>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Dashboard API</h3>
+                        <p><strong>GET</strong> /api/dashboard</p>
+                        <p>Returns overall statistics and KPIs</p>
+                        <button class="btn" onclick="testApi('dashboard', 'GET')">Test API</button>
+                        <div id="dashboard-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Due Diligence API</h3>
+                        <p><strong>GET</strong> /api/assessments</p>
+                        <p><strong>POST</strong> /api/assessments</p>
+                        <p><strong>PUT</strong> /api/assessments/:id</p>
+                        <button class="btn" onclick="testApi('assessments', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('assessments')">Test POST</button>
+                        <div id="assessments-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Knowledge Acquisition API</h3>
+                        <p><strong>GET</strong> /api/trainings</p>
+                        <p><strong>POST</strong> /api/trainings</p>
+                        <p><strong>PUT</strong> /api/trainings/:id</p>
+                        <button class="btn" onclick="testApi('trainings', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('trainings')">Test POST</button>
+                        <div id="trainings-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Shadow Activities API</h3>
+                        <p><strong>GET</strong> /api/shadows</p>
+                        <p><strong>POST</strong> /api/shadows</p>
+                        <p><strong>PUT</strong> /api/shadows/:id</p>
+                        <button class="btn" onclick="testApi('shadows', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('shadows')">Test POST</button>
+                        <div id="shadows-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Stabilization API</h3>
+                        <p><strong>GET</strong> /api/issues</p>
+                        <p><strong>POST</strong> /api/issues</p>
+                        <p><strong>PUT</strong> /api/issues/:id</p>
+                        <button class="btn" onclick="testApi('issues', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('issues')">Test POST</button>
+                        <div id="issues-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Support Tickets API</h3>
+                        <p><strong>GET</strong> /api/tickets</p>
+                        <p><strong>POST</strong> /api/tickets</p>
+                        <p><strong>PUT</strong> /api/tickets/:id</p>
+                        <button class="btn" onclick="testApi('tickets', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('tickets')">Test POST</button>
+                        <div id="tickets-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Client Surveys API</h3>
+                        <p><strong>GET</strong> /api/surveys</p>
+                        <p><strong>POST</strong> /api/surveys</p>
+                        <p><strong>PUT</strong> /api/surveys/:id</p>
+                        <button class="btn" onclick="testApi('surveys', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('surveys')">Test POST</button>
+                        <div id="surveys-result" class="api-result"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Projects API</h3>
+                        <p><strong>GET</strong> /api/projects</p>
+                        <p><strong>POST</strong> /api/projects</p>
+                        <button class="btn" onclick="testApi('projects', 'GET')">Test GET</button>
+                        <button class="btn" onclick="showApiForm('projects')">Test POST</button>
+                        <div id="projects-result" class="api-result"></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>API Documentation</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Endpoint</th><th>Method</th><th>Description</th><th>Example</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>/api/dashboard</td>
+                                <td>GET</td>
+                                <td>Get dashboard statistics</td>
+                                <td>curl http://localhost:3000/api/dashboard</td>
+                            </tr>
+                            <tr>
+                                <td>/api/assessments</td>
+                                <td>POST</td>
+                                <td>Create new assessment</td>
+                                <td>curl -X POST -H "Content-Type: application/json" -d '{"area":"Security"}' http://localhost:3000/api/assessments</td>
+                            </tr>
+                            <tr>
+                                <td>/api/trainings</td>
+                                <td>GET</td>
+                                <td>Get all training sessions</td>
+                                <td>curl http://localhost:3000/api/trainings</td>
+                            </tr>
+                            <tr>
+                                <td>/api/tickets</td>
+                                <td>PUT</td>
+                                <td>Update support ticket</td>
+                                <td>curl -X PUT -H "Content-Type: application/json" -d '{"status":"resolved"}' http://localhost:3000/api/tickets/TKT-001</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1688,6 +1823,102 @@
         
         function generateSurveyReport() { alert('Generating comprehensive survey analytics report...'); }
         function exportFeedback() { alert('Exporting feedback data to CSV...'); }
+        
+        // API Endpoints functions
+        const API_BASE = 'http://localhost:3000';
+        
+        function checkApiStatus() {
+            fetch(`${API_BASE}/api/dashboard`)
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('apiStatus').textContent = 'Online';
+                        document.getElementById('apiStatus').className = 'status status-green';
+                    } else {
+                        throw new Error('API not responding');
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('apiStatus').textContent = 'Offline';
+                    document.getElementById('apiStatus').className = 'status status-red';
+                });
+        }
+        
+        function startApiServer() {
+            alert('To start API server:\n1. Open terminal\n2. Navigate to project folder\n3. Run: npm install\n4. Run: npm start\n5. Server will start on http://localhost:3000');
+        }
+        
+        function testApi(endpoint, method) {
+            const url = `${API_BASE}/api/${endpoint}`;
+            const resultDiv = document.getElementById(`${endpoint}-result`);
+            
+            fetch(url, { method: method })
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML = `<strong>Response:</strong><br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<strong>Error:</strong><br><pre>${error.message}</pre>`;
+                });
+        }
+        
+        function showApiForm(endpoint) {
+            const forms = {
+                assessments: `
+                    <h3>Create Assessment</h3>
+                    <div class="form-group">
+                        <label>Area:</label>
+                        <input type="text" id="api-area" placeholder="Assessment area">
+                    </div>
+                    <div class="form-group">
+                        <label>Owner:</label>
+                        <input type="text" id="api-owner" placeholder="Owner">
+                    </div>
+                    <button class="btn" onclick="postApiData('assessments', {area: document.getElementById('api-area').value, owner: document.getElementById('api-owner').value, projectId: 'PRJ-001', status: 'pending', score: 0})">Create</button>
+                `,
+                trainings: `
+                    <h3>Create Training</h3>
+                    <div class="form-group">
+                        <label>Topic:</label>
+                        <input type="text" id="api-topic" placeholder="Training topic">
+                    </div>
+                    <div class="form-group">
+                        <label>Trainer:</label>
+                        <input type="text" id="api-trainer" placeholder="Trainer name">
+                    </div>
+                    <button class="btn" onclick="postApiData('trainings', {topic: document.getElementById('api-topic').value, trainer: document.getElementById('api-trainer').value, projectId: 'PRJ-001', progress: 0})">Create</button>
+                `,
+                tickets: `
+                    <h3>Create Ticket</h3>
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" id="api-title" placeholder="Ticket title">
+                    </div>
+                    <div class="form-group">
+                        <label>Priority:</label>
+                        <select id="api-priority"><option>high</option><option>medium</option><option>low</option></select>
+                    </div>
+                    <button class="btn" onclick="postApiData('tickets', {title: document.getElementById('api-title').value, priority: document.getElementById('api-priority').value, projectId: 'PRJ-001', status: 'open'})">Create</button>
+                `
+            };
+            
+            showModal(forms[endpoint] || '<p>Form not available for this endpoint</p>');
+        }
+        
+        function postApiData(endpoint, data) {
+            fetch(`${API_BASE}/api/${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById(`${endpoint}-result`).innerHTML = `<strong>Created:</strong><br><pre>${JSON.stringify(result, null, 2)}</pre>`;
+                closeModal();
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+            });
+        }
     </script>
 </body>
 </html>
