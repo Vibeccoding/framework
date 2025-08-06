@@ -46,6 +46,9 @@
         .form-group { margin: 15px 0; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .ai-agent-chat { background: #f9f9f9; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
+        .ai-message { margin: 5px 0; }
+        .user-message { margin: 5px 0; text-align: right; }
     </style>
 </head>
 <body>
@@ -177,7 +180,33 @@
 
             <!-- Due Diligence Module -->
             <div id="due-diligence" class="module">
-                <h1>Due Diligence</h1>
+                <h1>Due Diligence Dashboard</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Assessments Overview</h3>
+                        <div class="metric">
+                            <span>Total Assessments:</span>
+                            <span class="metric-value" id="totalAssessments">0</span>
+                        </div>
+                        <div class="metric">
+                            <span>Completed:</span>
+                            <span class="metric-value" id="completedAssessments">0</span>
+                        </div>
+                        <div class="metric">
+                            <span>Average Score:</span>
+                            <span class="metric-value" id="avgAssessmentScore">0</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>AI Agent Assistant</h3>
+                        <div id="aiAgentChat" class="ai-agent-chat">
+                            <div class="ai-message"><strong>AI Agent:</strong> How can I assist with your due diligence process today?</div>
+                        </div>
+                        <input type="text" id="aiAgentInput" placeholder="Ask the AI Agent..." class="ai-agent-input" />
+                        <button class="btn" onclick="sendAIAgentMessage()">Send</button>
+                    </div>
+                </div>
+
                 <div class="card">
                     <h3>Assessment Status</h3>
                     <table>
@@ -1538,8 +1567,7 @@
         function takeAssessment() { alert('Starting assessment...'); }
         function viewResults() { alert('Viewing assessment results...'); }
         
-        // Shadow functions
-        function joinShadow(activityId) { alert(`Joining shadow activity: ${activityId}`); }
+        // Shadow functions        function joinShadow(activityId) { alert(`Joining shadow activity: ${activityId}`); }
         function scheduleShadow(activityId) { alert(`Scheduling shadow: ${activityId}`); }
         function createShadowSession() { alert('Creating new shadow session...'); }
         function updateCompetency() { alert('Opening competency update form...'); }
@@ -2033,7 +2061,50 @@
             if (document.getElementById('data-cleaning')) {
                 initDataCleaningDashboard();
             }
+            if (document.getElementById('due-diligence')) {
+                updateDueDiligenceDashboard();
+            }
         });
+
+        function updateDueDiligenceDashboard() {
+            const total = appData.assessments.length;
+            const completed = appData.assessments.filter(a => a.status === 'complete').length;
+            const avgScore = total > 0 ? (appData.assessments.reduce((sum, a) => sum + a.score, 0) / total).toFixed(1) : 0;
+            document.getElementById('totalAssessments').textContent = total;
+            document.getElementById('completedAssessments').textContent = completed;
+            document.getElementById('avgAssessmentScore').textContent = avgScore;
+        }
+        function sendAIAgentMessage() {
+            const chatDiv = document.getElementById('aiAgentChat');
+            const input = document.getElementById('aiAgentInput');
+            const userMsg = input.value.trim();
+            if (userMsg) {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'user-message';
+                userDiv.innerHTML = `<strong>You:</strong> ${userMsg}`;
+                chatDiv.appendChild(userDiv);
+                setTimeout(() => {
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = 'ai-message';
+                    aiDiv.innerHTML = `<strong>AI Agent:</strong> ${getAIAgentResponse(userMsg)}`;
+                    chatDiv.appendChild(aiDiv);
+                    chatDiv.scrollTop = chatDiv.scrollHeight;
+                }, 1000);
+                input.value = '';
+                chatDiv.scrollTop = chatDiv.scrollHeight;
+            }
+        }
+        function getAIAgentResponse(msg) {
+            // Simulated AI responses
+            if (msg.toLowerCase().includes('summary')) {
+                return 'Here is a summary of your due diligence assessments: Most are complete with an average score above 80.';
+            } else if (msg.toLowerCase().includes('risk')) {
+                return 'AI Agent recommends reviewing technical architecture and security for potential risks.';
+            } else if (msg.toLowerCase().includes('improve')) {
+                return 'Consider adding more detailed documentation and increasing assessment frequency.';
+            }
+            return 'I am here to help! Ask me about assessments, risks, or improvement suggestions.';
+        }
     </script>
 </body>
 </html>
