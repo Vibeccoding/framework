@@ -1,4 +1,4 @@
-# Cognizant Neuro Transition Platform
+# Cognizant Neuro AI Transition Platform
 
 A comprehensive web-based platform for managing vendor transitions with AI-powered analytics and real-time collaboration tools.
 

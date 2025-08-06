@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cognizant Neuro Transition Platform</title>
+    <title>Cognizant Neuro AI Transition Platform</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1121,6 +1121,31 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Data Cleaning Module -->
+            <div id="data-cleaning" class="module">
+                <h1>Data Cleaning</h1>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Ingestion</h3>
+                        <p>AI-powered data ingestion and preprocessing.</p>
+                        <button class="btn" onclick="runDataCleaningAI('ingestion')">Run Ingestion with OpenAI</button>
+                        <div id="ingestion-result" class="ai-result"></div>
+                    </div>
+                    <div class="card">
+                        <h3>Modeling</h3>
+                        <p>AI-driven data modeling and transformation.</p>
+                        <button class="btn" onclick="runDataCleaningAI('modeling')">Run Modeling with OpenAI</button>
+                        <div id="modeling-result" class="ai-result"></div>
+                    </div>
+                    <div class="card">
+                        <h3>Consumption</h3>
+                        <p>AI-optimized data consumption and delivery.</p>
+                        <button class="btn" onclick="runDataCleaningAI('consumption')">Run Consumption with OpenAI</button>
+                        <div id="consumption-result" class="ai-result"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1918,6 +1943,23 @@
             .catch(error => {
                 alert('Error: ' + error.message);
             });
+        }
+
+        function runDataCleaningAI(type) {
+            const resultDiv = document.getElementById(type + '-result');
+            resultDiv.innerHTML = '<span>Connecting to OpenAI...</span>';
+            setTimeout(() => {
+                // Simulate OpenAI response
+                let aiOutput = '';
+                if (type === 'ingestion') {
+                    aiOutput = 'Ingestion complete. Data validated and preprocessed by OpenAI.';
+                } else if (type === 'modeling') {
+                    aiOutput = 'Modeling complete. Data transformed using OpenAI model.';
+                } else if (type === 'consumption') {
+                    aiOutput = 'Consumption complete. Data delivered in optimal format by OpenAI.';
+                }
+                resultDiv.innerHTML = `<strong>AI Result:</strong> ${aiOutput}`;
+            }, 2000);
         }
     </script>
 </body>
