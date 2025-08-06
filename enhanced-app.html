@@ -65,6 +65,7 @@
             <div class="nav-item" onclick="showModule('reports')">Reports</div>
             <div class="nav-item" onclick="showModule('client-survey')">Client Survey</div>
             <div class="nav-item" onclick="showModule('api-endpoints')">API Endpoints</div>
+            <div class="nav-item" onclick="showModule('data-cleaning')">Data Cleaning</div>
         </div>
         
         <div class="main">
@@ -1566,7 +1567,7 @@
                     component: component,
                     status: 'open',
                     assignee: assignee,
-                    createdDate: new Date().toISOString()
+                                       createdDate: new Date().toISOString()
                 };
                 appData.issues.push(newIssue);
                 saveData();
