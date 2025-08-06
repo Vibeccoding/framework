@@ -2095,15 +2095,33 @@
             }
         }
         function getAIAgentResponse(msg) {
-            // Simulated AI responses
+            // Real data-driven AI responses
             if (msg.toLowerCase().includes('summary')) {
-                return 'Here is a summary of your due diligence assessments: Most are complete with an average score above 80.';
+                const total = appData.assessments.length;
+                const completed = appData.assessments.filter(a => a.status === 'complete').length;
+                const avgScore = total > 0 ? (appData.assessments.reduce((sum, a) => sum + a.score, 0) / total).toFixed(1) : 0;
+                return `Summary: Total Assessments: ${total}, Completed: ${completed}, Average Score: ${avgScore}`;
             } else if (msg.toLowerCase().includes('risk')) {
-                return 'AI Agent recommends reviewing technical architecture and security for potential risks.';
+                const risks = appData.assessments.filter(a => a.issues > 0);
+                if (risks.length > 0) {
+                    return `Risks detected in ${risks.length} assessment(s): ${risks.map(r => r.area).join(', ')}.`;
+                } else {
+                    return 'No major risks detected in current assessments.';
+                }
             } else if (msg.toLowerCase().includes('improve')) {
-                return 'Consider adding more detailed documentation and increasing assessment frequency.';
+                const lowScores = appData.assessments.filter(a => a.score < 70);
+                if (lowScores.length > 0) {
+                    return `Improvement needed in: ${lowScores.map(l => l.area).join(', ')}.`;
+                } else {
+                    return 'All assessments are performing well. Keep up the good work!';
+                }
             }
-            return 'I am here to help! Ask me about assessments, risks, or improvement suggestions.';
+            // Fallback: show latest assessment details
+            if (appData.assessments.length > 0) {
+                const latest = appData.assessments[appData.assessments.length - 1];
+                return `Latest Assessment: ${latest.area}, Status: ${latest.status}, Score: ${latest.score}, Owner: ${latest.owner}`;
+            }
+            return 'No assessment data available. Please add assessments to get started.';
         }
     </script>
 </body>
