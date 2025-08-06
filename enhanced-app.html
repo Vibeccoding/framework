@@ -1123,28 +1123,47 @@
                 </div>
             </div>
 
-            <!-- Data Cleaning Module -->
+            <!-- AI-Driven Data Cleaning Module -->
             <div id="data-cleaning" class="module">
-                <h1>Data Cleaning</h1>
+                <h1>AI-Driven Data Cleaning Dashboard</h1>
+                <div class="dashboard-grid">
+                    <!-- KPI Cards -->
+                    <div class="kpi-card">
+                        <h3>Cleaned Records</h3>
+                        <div class="kpi-value" id="cleanedRecords">12,500</div>
+                        <div class="kpi-desc">Records processed by AI</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Error Rate</h3>
+                        <div class="kpi-value" id="errorRate">0.8%</div>
+                        <div class="kpi-desc">Detected by AI</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Model Accuracy</h3>
+                        <div class="kpi-value" id="modelAccuracy">98.2%</div>
+                        <div class="kpi-desc">Latest AI model</div>
+                    </div>
+                </div>
+                <!-- Charts -->
                 <div class="dashboard-grid">
                     <div class="card">
-                        <h3>Ingestion</h3>
-                        <p>AI-powered data ingestion and preprocessing.</p>
-                        <button class="btn" onclick="runDataCleaningAI('ingestion')">Run Ingestion with OpenAI</button>
-                        <div id="ingestion-result" class="ai-result"></div>
+                        <h3>Data Quality Trends</h3>
+                        <canvas id="qualityChart" height="120"></canvas>
                     </div>
                     <div class="card">
-                        <h3>Modeling</h3>
-                        <p>AI-driven data modeling and transformation.</p>
-                        <button class="btn" onclick="runDataCleaningAI('modeling')">Run Modeling with OpenAI</button>
-                        <div id="modeling-result" class="ai-result"></div>
+                        <h3>Error Distribution</h3>
+                        <canvas id="errorChart" height="120"></canvas>
                     </div>
-                    <div class="card">
-                        <h3>Consumption</h3>
-                        <p>AI-optimized data consumption and delivery.</p>
-                        <button class="btn" onclick="runDataCleaningAI('consumption')">Run Consumption with OpenAI</button>
-                        <div id="consumption-result" class="ai-result"></div>
-                    </div>
+                </div>
+                <!-- AI Insights -->
+                <div class="card">
+                    <h3>AI Recommendations</h3>
+                    <ul id="aiRecommendations">
+                        <li>Optimize ingestion pipeline for faster processing.</li>
+                        <li>Review flagged records for potential anomalies.</li>
+                        <li>Retrain model with latest data for improved accuracy.</li>
+                    </ul>
+                    <button class="btn" onclick="refreshAIInsights()">Refresh AI Insights</button>
                 </div>
             </div>
         </div>
@@ -1962,6 +1981,59 @@
                 resultDiv.innerHTML = `<strong>AI Result:</strong> ${aiOutput}`;
             }, 2000);
         }
+
+        function initDataCleaningDashboard() {
+            // Data Quality Trends Chart
+            const qualityCtx = document.getElementById('qualityChart').getContext('2d');
+            new Chart(qualityCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Quality Score',
+                        data: [85, 88, 90, 92, 95, 98],
+                        borderColor: '#28a745',
+                        fill: false
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            // Error Distribution Chart
+            const errorCtx = document.getElementById('errorChart').getContext('2d');
+            new Chart(errorCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Missing', 'Invalid', 'Duplicate', 'Outlier'],
+                    datasets: [{
+                        label: 'Error Count',
+                        data: [12, 7, 3, 2],
+                        backgroundColor: ['#dc3545', '#ffc107', '#17a2b8', '#007bff']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+        function refreshAIInsights() {
+            const recommendations = [
+                'Optimize ingestion pipeline for faster processing.',
+                'Review flagged records for potential anomalies.',
+                'Retrain model with latest data for improved accuracy.',
+                'Implement additional validation rules for new data sources.'
+            ];
+            const aiList = document.getElementById('aiRecommendations');
+            aiList.innerHTML = '';
+            recommendations.sort(() => Math.random() - 0.5).slice(0, 3).forEach(r => {
+                const li = document.createElement('li');
+                li.textContent = r;
+                aiList.appendChild(li);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // ...existing code...
+            if (document.getElementById('data-cleaning')) {
+                initDataCleaningDashboard();
+            }
+        });
     </script>
 </body>
 </html>
