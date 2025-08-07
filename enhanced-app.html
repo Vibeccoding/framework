@@ -74,112 +74,37 @@
         <div class="main">
             <!-- Dashboard Module -->
             <div id="dashboard" class="module active">
-                <h1>Cognizant Neuro AI Transition Dashboard</h1>
-                
-                <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-value">78%</div>
-                        <div class="kpi-label">Overall Progress</div>
+                <div class="dashboard-header" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-bottom: 24px;">
+                    <!-- Phase Progress Card -->
+                    <div class="card" style="flex: 1 1 320px; min-width: 320px; max-width: 400px;">
+                        <h3>Transition Phases Progress</h3>
+                        <canvas id="phaseChart" height="180"></canvas>
                     </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">95.2%</div>
-                        <div class="kpi-label">SLA Compliance</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">12</div>
-                        <div class="kpi-label">Active Issues</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">24</div>
-                        <div class="kpi-label">Days to Go-Live</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">45</div>
-                        <div class="kpi-label">Applications</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">18</div>
-                        <div class="kpi-label">Team Members</div>
+                    <!-- AI Insights Card -->
+                    <div class="card" style="flex: 2 1 400px; min-width: 340px;">
+                        <h3>AI Insights</h3>
+                        <div id="aiPhaseInsights" style="font-size: 1.1em; color: #333; margin-bottom: 10px;"></div>
+                        <button class="btn" onclick="refreshPhaseAIInsights()">Refresh Insights</button>
                     </div>
                 </div>
-
-                <div class="dashboard-grid">
-                    <div class="chart-container">
-                        <h3>Phase Progress</h3>
-                        <canvas id="phaseChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                        <h3>Weekly Performance</h3>
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-
                 <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number">156</div>
-                        <div class="stat-label">Total Tasks</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">89</div>
-                        <div class="stat-label">Completed</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">32</div>
-                        <div class="stat-label">In Progress</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">35</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">99.8%</div>
-                        <div class="stat-label">Uptime</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1.2s</div>
-                        <div class="stat-label">Avg Response</div>
-                    </div>
                 </div>
-
                 <div class="dashboard-grid">
-                    <div class="card">
-                        <h3>Risk Assessment</h3>
-                        <div class="metric">
-                            <span>High Risk</span>
-                            <span class="status status-red">3</span>
-                        </div>
-                        <div class="metric">
-                            <span>Medium Risk</span>
-                            <span class="status status-yellow">8</span>
-                        </div>
-                        <div class="metric">
-                            <span>Low Risk</span>
-                            <span class="status status-green">15</span>
-                        </div>
-                        <button class="btn" onclick="viewRisks()">View All Risks</button>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Team Utilization</h3>
-                        <div class="metric">
-                            <span>Development Team</span>
-                            <span class="metric-value">85%</span>
-                        </div>
-                        <div class="metric">
-                            <span>Testing Team</span>
-                            <span class="metric-value">78%</span>
-                        </div>
-                        <div class="metric">
-                            <span>Support Team</span>
-                            <span class="metric-value">92%</span>
-                        </div>
-                        <button class="btn" onclick="manageTeam()">Manage Team</button>
-                    </div>
                 </div>
             </div>
 
             <!-- Due Diligence Module -->
             <div id="due-diligence" class="module">
+                <!-- Agentic AI Chat Assistant (moved to top) -->
+                <div class="card">
+                    <h3>Agentic AI Assistant</h3>
+                    <div id="aiAgentChat" style="height: 180px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;"></div>
+                    <div style="display: flex; gap: 8px;">
+                        <input id="aiAgentInput" type="text" placeholder="Ask the AI agent..." style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
+                        <button class="btn" onclick="sendAIAgentMessage()">Send</button>
+                    </div>
+                </div>
+                
                 <h1>Due Diligence Dashboard</h1>
                 <div class="dashboard-grid">
                     <div class="card">
@@ -196,14 +121,6 @@
                             <span>Average Score:</span>
                             <span class="metric-value" id="avgAssessmentScore">0</span>
                         </div>
-                    </div>
-                    <div class="card">
-                        <h3>AI Agent Assistant</h3>
-                        <div id="aiAgentChat" class="ai-agent-chat">
-                            <div class="ai-message"><strong>AI Agent:</strong> How can I assist with your due diligence process today?</div>
-                        </div>
-                        <input type="text" id="aiAgentInput" placeholder="Ask the AI Agent..." class="ai-agent-input" />
-                        <button class="btn" onclick="sendAIAgentMessage()">Send</button>
                     </div>
                 </div>
 
@@ -1151,50 +1068,6 @@
                     </table>
                 </div>
             </div>
-
-            <!-- AI-Driven Data Cleaning Module -->
-            <div id="data-cleaning" class="module">
-                <h1>AI-Driven Data Cleaning Dashboard</h1>
-                <div class="dashboard-grid">
-                    <!-- KPI Cards -->
-                    <div class="kpi-card">
-                        <h3>Cleaned Records</h3>
-                        <div class="kpi-value" id="cleanedRecords">12,500</div>
-                        <div class="kpi-desc">Records processed by AI</div>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>Error Rate</h3>
-                        <div class="kpi-value" id="errorRate">0.8%</div>
-                        <div class="kpi-desc">Detected by AI</div>
-                    </div>
-                    <div class="kpi-card">
-                        <h3>Model Accuracy</h3>
-                        <div class="kpi-value" id="modelAccuracy">98.2%</div>
-                        <div class="kpi-desc">Latest AI model</div>
-                    </div>
-                </div>
-                <!-- Charts -->
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <h3>Data Quality Trends</h3>
-                        <canvas id="qualityChart" height="120"></canvas>
-                    </div>
-                    <div class="card">
-                        <h3>Error Distribution</h3>
-                        <canvas id="errorChart" height="120"></canvas>
-                    </div>
-                </div>
-                <!-- AI Insights -->
-                <div class="card">
-                    <h3>AI Recommendations</h3>
-                    <ul id="aiRecommendations">
-                        <li>Optimize ingestion pipeline for faster processing.</li>
-                        <li>Review flagged records for potential anomalies.</li>
-                        <li>Retrain model with latest data for improved accuracy.</li>
-                    </ul>
-                    <button class="btn" onclick="refreshAIInsights()">Refresh AI Insights</button>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -2058,9 +1931,6 @@
         }
         document.addEventListener('DOMContentLoaded', function() {
             // ...existing code...
-            if (document.getElementById('data-cleaning')) {
-                initDataCleaningDashboard();
-            }
             if (document.getElementById('due-diligence')) {
                 updateDueDiligenceDashboard();
             }
@@ -2122,6 +1992,35 @@
                 return `Latest Assessment: ${latest.area}, Status: ${latest.status}, Score: ${latest.score}, Owner: ${latest.owner}`;
             }
             return 'No assessment data available. Please add assessments to get started.';
+        }
+        
+        function refreshPhaseAIInsights() {
+            // Example AI-driven summary for phases
+            const phaseData = [100, 85, 60, 30, 10];
+            const phaseNames = ['Due Diligence', 'Knowledge Acquisition', 'Shadow Phase', 'Stabilization', 'Steady Support'];
+            const completed = phaseNames.filter((_, i) => phaseData[i] === 100);
+            const currentIdx = phaseData.findIndex(p => p < 100);
+            const currentPhase = currentIdx !== -1 ? phaseNames[currentIdx] : 'All phases complete';
+            let aiMsg = '';
+            if (completed.length === 0) {
+                aiMsg = 'Project is at the initial phase. Due Diligence is underway.';
+            } else if (completed.length === phaseNames.length) {
+                aiMsg = 'Congratulations! All transition phases are complete.';
+            } else {
+                aiMsg = `Completed: ${completed.join(', ') || 'None'}<br>Current Phase: <strong>${currentPhase}</strong> (${phaseData[currentIdx]}% complete)`;
+                if (currentPhase === 'Due Diligence') {
+                    aiMsg += '<br>AI Suggestion: Focus on gathering all required documentation and stakeholder alignment.';
+                } else if (currentPhase === 'Knowledge Acquisition') {
+                    aiMsg += '<br>AI Suggestion: Schedule key training sessions and knowledge transfers.';
+                } else if (currentPhase === 'Shadow Phase') {
+                    aiMsg += '<br>AI Suggestion: Ensure shadowing activities are tracked and feedback is collected.';
+                } else if (currentPhase === 'Stabilization') {
+                    aiMsg += '<br>AI Suggestion: Monitor system performance and address open issues promptly.';
+                } else if (currentPhase === 'Steady Support') {
+                    aiMsg += '<br>AI Suggestion: Maintain high support standards and review client feedback regularly.';
+                }
+            }
+            document.getElementById('aiPhaseInsights').innerHTML = aiMsg;
         }
     </script>
 </body>
