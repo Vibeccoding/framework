@@ -49,6 +49,19 @@
         .ai-agent-chat { background: #f9f9f9; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
         .ai-message { margin: 5px 0; }
         .user-message { margin: 5px 0; text-align: right; }
+        /* Additional styles for the professional AI dashboard */
+        .dashboard-header { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .dashboard-kpis { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 24px; }
+        .kpi-card { background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0; }
+        .kpi-card .kpi-value { font-size: 2em; color: #007bff; font-weight: bold; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 24px; }
+        h3 { margin-bottom: 16px; font-size: 18px; color: #333; }
+        /* Chart container styles */
+        .chart-container { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
+        /* Modal styles */
+        .modal-content { background: #fff; margin: 50px auto; padding: 20px; width: 90%; max-width: 500px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -69,27 +82,54 @@
         </div>
         <div class="main">
             <!-- Dashboard Module -->
-            <div id="dashboard" class="module active">
-                <div class="dashboard-header" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-bottom: 24px;">
-                    <!-- Phase Progress Card -->
-                    <div class="card" style="flex: 1 1 320px; min-width: 320px; max-width: 400px;">
-                        <h3>Transition Progress Overview</h3>
+            <div id="dashboard" class="module active" style="padding: 0 10px;">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 24px; gap: 16px;">
+                    <div style="flex: 2 1 350px;">
+                        <h1 style="margin-bottom: 6px; color: #1a237e; font-size: 2.2em;">Cognizant Neuro AI Transition Platform</h1>
+                        <div style="font-size: 1.1em; color: #444;">Welcome, <span id="dashboardUserName"></span>! Here’s your project’s AI-powered transition overview.</div>
+                    </div>
+                    <div style="flex: 1 1 200px; text-align: right;">
+                        <div style="font-size: 1.1em; color: #666;">Project:</div>
+                        <div style="font-weight: bold; color: #007bff; font-size: 1.2em;" id="dashboardProjectName"></div>
+                        <div style="font-size: 0.95em; color: #888;" id="dashboardProjectStatus"></div>
+                    </div>
+                </div>
+                <!-- KPI Cards -->
+                <div class="dashboard-kpis" style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 24px;">
+                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
+                        <div style="font-size: 1.1em; color: #888;">Project Progress</div>
+                        <div class="kpi-value" id="kpiProjectProgress" style="font-size: 2em; color: #1976d2; font-weight: bold;">0%</div>
+                    </div>
+                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
+                        <div style="font-size: 1.1em; color: #888;">Completed Assessments</div>
+                        <div class="kpi-value" id="kpiCompletedAssessments" style="font-size: 2em; color: #388e3c; font-weight: bold;">0</div>
+                    </div>
+                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
+                        <div style="font-size: 1.1em; color: #888;">Open Issues</div>
+                        <div class="kpi-value" id="kpiOpenIssues" style="font-size: 2em; color: #d32f2f; font-weight: bold;">0</div>
+                    </div>
+                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
+                        <div style="font-size: 1.1em; color: #888;">Avg. Survey Rating</div>
+                        <div class="kpi-value" id="kpiAvgSurveyRating" style="font-size: 2em; color: #fbc02d; font-weight: bold;">0</div>
+                    </div>
+                </div>
+                <!-- Phase Progress & AI Insights -->
+                <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 24px;">
+                    <div class="card" style="flex: 1 1 340px; min-width: 320px; max-width: 400px;">
+                        <h3>Transition Phases Progress</h3>
                         <canvas id="phaseChart" height="180"></canvas>
                     </div>
-                    <!-- AI Insights Card -->
                     <div class="card" style="flex: 2 1 400px; min-width: 340px;">
                         <h3>AI-Powered Project Insights</h3>
                         <div id="aiPhaseInsights" style="font-size: 1.1em; color: #333; margin-bottom: 10px;"></div>
                         <button class="btn" onclick="refreshPhaseAIInsights()">Refresh Insights</button>
                     </div>
                 </div>
-                <div class="card" style="margin-bottom: 20px;">
-                    <h3>Welcome to the Cognizant Neuro AI Transition Platform</h3>
-                    <p>This dashboard provides a real-time overview of your project’s transition journey. Track progress across all phases, review AI-generated recommendations, and stay informed to ensure a smooth and successful transition.</p>
-                </div>
-                <div class="stats-grid">
-                </div>
-                <div class="dashboard-grid">
+                <!-- Performance Trends Chart -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3>Performance Trends</h3>
+                    <canvas id="performanceChart" height="120"></canvas>
                 </div>
             </div>
 
@@ -1101,25 +1141,23 @@
             const project = appData.projects[0];
             const completedAssessments = appData.assessments.filter(a => a.status === 'complete').length;
             const totalIssues = appData.issues.length;
-            const avgSurveyRating = appData.surveys.reduce((sum, s) => sum + s.rating, 0) / appData.surveys.length;
-            
+            const avgSurveyRating = appData.surveys.length > 0 ? (appData.surveys.reduce((sum, s) => sum + s.rating, 0) / appData.surveys.length).toFixed(1) : 0;
+            // Update dashboard header
+            document.getElementById('dashboardProjectName').textContent = project.name;
+            document.getElementById('dashboardProjectStatus').textContent = `Status: ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}, Progress: ${project.progress}%`;
+            const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            document.getElementById('dashboardUserName').textContent = user ? user.name : 'User';
             // Update KPI cards
-            document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = project.progress + '%';
-            document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = totalIssues;
-            
-            // Update stats
-            const stats = document.querySelectorAll('.stat-number');
-            if (stats.length > 0) {
-                stats[0].textContent = appData.assessments.length + appData.trainings.length + appData.shadows.length;
-                stats[1].textContent = completedAssessments;
-            }
+            document.getElementById('kpiProjectProgress').textContent = project.progress + '%';
+            document.getElementById('kpiCompletedAssessments').textContent = completedAssessments;
+            document.getElementById('kpiOpenIssues').textContent = totalIssues;
+            document.getElementById('kpiAvgSurveyRating').textContent = avgSurveyRating;
         }
-        
-        // Check authentication and initialize
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
             initCharts();
             updateDashboard();
+            refreshPhaseAIInsights();
         });
         
         function checkAuth() {
@@ -1411,7 +1449,7 @@
             }
             closeModal();
         }
-        function viewTickets() { alert('Opening Ticket Management Dashboard...'); }
+               function viewTickets() { alert('Opening Ticket Management Dashboard...'); }
         function viewFeedback() { alert('Opening Customer Feedback Dashboard...'); }
         
         // Chat functionality
