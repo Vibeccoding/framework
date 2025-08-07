@@ -46,28 +46,14 @@
         .form-group { margin: 15px 0; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        .ai-agent-chat { background: #f9f9f9; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
-        .ai-message { margin: 5px 0; }
-        .user-message { margin: 5px 0; text-align: right; }
-        /* Additional styles for the professional AI dashboard */
-        .dashboard-header { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .dashboard-kpis { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 24px; }
-        .kpi-card { background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0; }
-        .kpi-card .kpi-value { font-size: 2em; color: #007bff; font-weight: bold; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 24px; }
-        h3 { margin-bottom: 16px; font-size: 18px; color: #333; }
-        /* Chart container styles */
-        .chart-container { position: relative; width: 100%; height: 400px; margin-bottom: 24px; }
-        /* Modal styles */
-        .modal-content { background: #fff; margin: 50px auto; padding: 20px; width: 90%; max-width: 500px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
-        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 14px;">Cognizant Neuro AI Transition Platform</h2>
+                <button class="btn" onclick="logout()" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Logout</button>
             </div>
             <div id="userInfo" style="margin-bottom: 15px; padding: 10px; background: #34495e; border-radius: 4px; font-size: 12px;"></div>
             <div class="nav-item active" onclick="showModule('dashboard')">Dashboard</div>
@@ -80,90 +66,117 @@
             <div class="nav-item" onclick="showModule('client-survey')">Client Survey</div>
             <div class="nav-item" onclick="showModule('api-endpoints')">API Endpoints</div>
         </div>
+        
         <div class="main">
             <!-- Dashboard Module -->
-            <div id="dashboard" class="module active" style="padding: 0 10px;">
-                <!-- Dashboard Header -->
-                <div class="dashboard-header" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 24px; gap: 16px;">
-                    <div style="flex: 2 1 350px;">
-                        <h1 style="margin-bottom: 6px; color: #1a237e; font-size: 2.2em;">Cognizant Neuro AI Transition Platform</h1>
-                        <div style="font-size: 1.1em; color: #444;">Welcome, <span id="dashboardUserName"></span>! Here’s your project’s AI-powered transition overview.</div>
+            <div id="dashboard" class="module active">
+                <h1>Cognizant Neuro AI Transition Dashboard</h1>
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">78%</div>
+                        <div class="kpi-label">Overall Progress</div>
                     </div>
-                    <div style="flex: 1 1 200px; text-align: right;">
-                        <div style="font-size: 1.1em; color: #666;">Project:</div>
-                        <div style="font-weight: bold; color: #007bff; font-size: 1.2em;" id="dashboardProjectName"></div>
-                        <div style="font-size: 0.95em; color: #888;" id="dashboardProjectStatus"></div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">95.2%</div>
+                        <div class="kpi-label">SLA Compliance</div>
                     </div>
-                </div>
-                <!-- KPI Cards -->
-                <div class="dashboard-kpis" style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 24px;">
-                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
-                        <div style="font-size: 1.1em; color: #888;">Project Progress</div>
-                        <div class="kpi-value" id="kpiProjectProgress" style="font-size: 2em; color: #1976d2; font-weight: bold;">0%</div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">12</div>
+                        <div class="kpi-label">Active Issues</div>
                     </div>
-                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
-                        <div style="font-size: 1.1em; color: #888;">Completed Assessments</div>
-                        <div class="kpi-value" id="kpiCompletedAssessments" style="font-size: 2em; color: #388e3c; font-weight: bold;">0</div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">24</div>
+                        <div class="kpi-label">Days to Go-Live</div>
                     </div>
-                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
-                        <div style="font-size: 1.1em; color: #888;">Open Issues</div>
-                        <div class="kpi-value" id="kpiOpenIssues" style="font-size: 2em; color: #d32f2f; font-weight: bold;">0</div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">45</div>
+                        <div class="kpi-label">Applications</div>
                     </div>
-                    <div class="kpi-card" style="flex: 1 1 180px; min-width: 180px; background: #f5f7fa; border-radius: 8px; padding: 18px 16px; box-shadow: 0 2px 8px #e3e6f0;">
-                        <div style="font-size: 1.1em; color: #888;">Avg. Survey Rating</div>
-                        <div class="kpi-value" id="kpiAvgSurveyRating" style="font-size: 2em; color: #fbc02d; font-weight: bold;">0</div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">18</div>
+                        <div class="kpi-label">Team Members</div>
                     </div>
                 </div>
-                <!-- Phase Progress & AI Insights -->
-                <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 24px;">
-                    <div class="card" style="flex: 1 1 340px; min-width: 320px; max-width: 400px;">
-                        <h3>Transition Phases Progress</h3>
-                        <canvas id="phaseChart" height="180"></canvas>
+
+                <div class="dashboard-grid">
+                    <div class="chart-container">
+                        <h3>Phase Progress</h3>
+                        <canvas id="phaseChart"></canvas>
                     </div>
-                    <div class="card" style="flex: 2 1 400px; min-width: 340px;">
-                        <h3>AI-Powered Project Insights</h3>
-                        <div id="aiPhaseInsights" style="font-size: 1.1em; color: #333; margin-bottom: 10px;"></div>
-                        <button class="btn" onclick="refreshPhaseAIInsights()">Refresh Insights</button>
+                    <div class="chart-container">
+                        <h3>Weekly Performance</h3>
+                        <canvas id="performanceChart"></canvas>
                     </div>
                 </div>
-                <!-- Performance Trends Chart -->
-                <div class="card" style="margin-bottom: 24px;">
-                    <h3>Performance Trends</h3>
-                    <canvas id="performanceChart" height="120"></canvas>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">89</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">32</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">35</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">99.8%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.2s</div>
+                        <div class="stat-label">Avg Response</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Risk Assessment</h3>
+                        <div class="metric">
+                            <span>High Risk</span>
+                            <span class="status status-red">3</span>
+                        </div>
+                        <div class="metric">
+                            <span>Medium Risk</span>
+                            <span class="status status-yellow">8</span>
+                        </div>
+                        <div class="metric">
+                            <span>Low Risk</span>
+                            <span class="status status-green">15</span>
+                        </div>
+                        <button class="btn" onclick="viewRisks()">View All Risks</button>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Team Utilization</h3>
+                        <div class="metric">
+                            <span>Development Team</span>
+                            <span class="metric-value">85%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Testing Team</span>
+                            <span class="metric-value">78%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Support Team</span>
+                            <span class="metric-value">92%</span>
+                        </div>
+                        <button class="btn" onclick="manageTeam()">Manage Team</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Due Diligence Module -->
             <div id="due-diligence" class="module">
-                <!-- Agentic AI Chat Assistant (moved to top) -->
-                <div class="card">
-                    <h3>Agentic AI Assistant</h3>
-                    <div id="aiAgentChat" style="height: 180px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 10px;"></div>
-                    <div style="display: flex; gap: 8px;">
-                        <input id="aiAgentInput" type="text" placeholder="Ask the AI agent..." style="flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #ccc;">
-                        <button class="btn" onclick="sendAIAgentMessage()">Send</button>
-                    </div>
-                </div>
-                
-                <h1>Due Diligence Dashboard</h1>
-                <div class="dashboard-grid">
-                    <div class="card">
-                        <h3>Assessments Overview</h3>
-                        <div class="metric">
-                            <span>Total Assessments:</span>
-                            <span class="metric-value" id="totalAssessments">0</span>
-                        </div>
-                        <div class="metric">
-                            <span>Completed:</span>
-                            <span class="metric-value" id="completedAssessments">0</span>
-                        </div>
-                        <div class="metric">
-                            <span>Average Score:</span>
-                            <span class="metric-value" id="avgAssessmentScore">0</span>
-                        </div>
-                    </div>
-                </div>
-
+                <h1>Due Diligence</h1>
                 <div class="card">
                     <h3>Assessment Status</h3>
                     <table>
@@ -1141,23 +1154,25 @@
             const project = appData.projects[0];
             const completedAssessments = appData.assessments.filter(a => a.status === 'complete').length;
             const totalIssues = appData.issues.length;
-            const avgSurveyRating = appData.surveys.length > 0 ? (appData.surveys.reduce((sum, s) => sum + s.rating, 0) / appData.surveys.length).toFixed(1) : 0;
-            // Update dashboard header
-            document.getElementById('dashboardProjectName').textContent = project.name;
-            document.getElementById('dashboardProjectStatus').textContent = `Status: ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}, Progress: ${project.progress}%`;
-            const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-            document.getElementById('dashboardUserName').textContent = user ? user.name : 'User';
+            const avgSurveyRating = appData.surveys.reduce((sum, s) => sum + s.rating, 0) / appData.surveys.length;
+            
             // Update KPI cards
-            document.getElementById('kpiProjectProgress').textContent = project.progress + '%';
-            document.getElementById('kpiCompletedAssessments').textContent = completedAssessments;
-            document.getElementById('kpiOpenIssues').textContent = totalIssues;
-            document.getElementById('kpiAvgSurveyRating').textContent = avgSurveyRating;
+            document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = project.progress + '%';
+            document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = totalIssues;
+            
+            // Update stats
+            const stats = document.querySelectorAll('.stat-number');
+            if (stats.length > 0) {
+                stats[0].textContent = appData.assessments.length + appData.trainings.length + appData.shadows.length;
+                stats[1].textContent = completedAssessments;
+            }
         }
+        
+        // Check authentication and initialize
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
             initCharts();
             updateDashboard();
-            refreshPhaseAIInsights();
         });
         
         function checkAuth() {
@@ -1449,7 +1464,7 @@
             }
             closeModal();
         }
-               function viewTickets() { alert('Opening Ticket Management Dashboard...'); }
+        function viewTickets() { alert('Opening Ticket Management Dashboard...'); }
         function viewFeedback() { alert('Opening Customer Feedback Dashboard...'); }
         
         // Chat functionality
@@ -1478,7 +1493,8 @@
         function takeAssessment() { alert('Starting assessment...'); }
         function viewResults() { alert('Viewing assessment results...'); }
         
-        // Shadow functions        function joinShadow(activityId) { alert(`Joining shadow activity: ${activityId}`); }
+        // Shadow functions
+        function joinShadow(activityId) { alert(`Joining shadow activity: ${activityId}`); }
         function scheduleShadow(activityId) { alert(`Scheduling shadow: ${activityId}`); }
         function createShadowSession() { alert('Creating new shadow session...'); }
         function updateCompetency() { alert('Opening competency update form...'); }
@@ -1525,7 +1541,7 @@
                     component: component,
                     status: 'open',
                     assignee: assignee,
-                                       createdDate: new Date().toISOString()
+                    createdDate: new Date().toISOString()
                 };
                 appData.issues.push(newIssue);
                 saveData();
@@ -1579,7 +1595,6 @@
         // Reports functions
         function generateWSR() { alert('Generating Weekly Status Report...'); }
         function scheduleWSR() { 
-            
             showModal(`
                 <h3>Schedule WSR</h3>
                 <div class="form-group">
@@ -1903,163 +1918,6 @@
             .catch(error => {
                 alert('Error: ' + error.message);
             });
-        }
-
-        function runDataCleaningAI(type) {
-            const resultDiv = document.getElementById(type + '-result');
-            resultDiv.innerHTML = '<span>Connecting to OpenAI...</span>';
-            setTimeout(() => {
-                // Simulate OpenAI response
-                let aiOutput = '';
-                if (type === 'ingestion') {
-                    aiOutput = 'Ingestion complete. Data validated and preprocessed by OpenAI.';
-                } else if (type === 'modeling') {
-                    aiOutput = 'Modeling complete. Data transformed using OpenAI model.';
-                } else if (type === 'consumption') {
-                    aiOutput = 'Consumption complete. Data delivered in optimal format by OpenAI.';
-                }
-                resultDiv.innerHTML = `<strong>AI Result:</strong> ${aiOutput}`;
-            }, 2000);
-        }
-
-        function initDataCleaningDashboard() {
-            // Data Quality Trends Chart
-            const qualityCtx = document.getElementById('qualityChart').getContext('2d');
-            new Chart(qualityCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{
-                        label: 'Quality Score',
-                        data: [85, 88, 90, 92, 95, 98],
-                        borderColor: '#28a745',
-                        fill: false
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-            // Error Distribution Chart
-            const errorCtx = document.getElementById('errorChart').getContext('2d');
-            new Chart(errorCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Missing', 'Invalid', 'Duplicate', 'Outlier'],
-                    datasets: [{
-                        label: 'Error Count',
-                        data: [12, 7, 3, 2],
-                        backgroundColor: ['#dc3545', '#ffc107', '#17a2b8', '#007bff']
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-        function refreshAIInsights() {
-            const recommendations = [
-                'Optimize ingestion pipeline for faster processing.',
-                'Review flagged records for potential anomalies.',
-                'Retrain model with latest data for improved accuracy.',
-                'Implement additional validation rules for new data sources.'
-            ];
-            const aiList = document.getElementById('aiRecommendations');
-            aiList.innerHTML = '';
-            recommendations.sort(() => Math.random() - 0.5).slice(0, 3).forEach(r => {
-                const li = document.createElement('li');
-                li.textContent = r;
-                aiList.appendChild(li);
-            });
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            // ...existing code...
-            if (document.getElementById('due-diligence')) {
-                updateDueDiligenceDashboard();
-            }
-        });
-
-        function updateDueDiligenceDashboard() {
-            const total = appData.assessments.length;
-            const completed = appData.assessments.filter(a => a.status === 'complete').length;
-            const avgScore = total > 0 ? (appData.assessments.reduce((sum, a) => sum + a.score, 0) / total).toFixed(1) : 0;
-            document.getElementById('totalAssessments').textContent = total;
-            document.getElementById('completedAssessments').textContent = completed;
-            document.getElementById('avgAssessmentScore').textContent = avgScore;
-        }
-        function sendAIAgentMessage() {
-            const chatDiv = document.getElementById('aiAgentChat');
-            const input = document.getElementById('aiAgentInput');
-            const userMsg = input.value.trim();
-            if (userMsg) {
-                const userDiv = document.createElement('div');
-                userDiv.className = 'user-message';
-                userDiv.innerHTML = `<strong>You:</strong> ${userMsg}`;
-                chatDiv.appendChild(userDiv);
-                setTimeout(() => {
-                    const aiDiv = document.createElement('div');
-                    aiDiv.className = 'ai-message';
-                    aiDiv.innerHTML = `<strong>AI Agent:</strong> ${getAIAgentResponse(userMsg)}`;
-                    chatDiv.appendChild(aiDiv);
-                    chatDiv.scrollTop = chatDiv.scrollHeight;
-                }, 1000);
-                input.value = '';
-                chatDiv.scrollTop = chatDiv.scrollHeight;
-            }
-        }
-        function getAIAgentResponse(msg) {
-            // Real data-driven AI responses
-            if (msg.toLowerCase().includes('summary')) {
-                const total = appData.assessments.length;
-                const completed = appData.assessments.filter(a => a.status === 'complete').length;
-                const avgScore = total > 0 ? (appData.assessments.reduce((sum, a) => sum + a.score, 0) / total).toFixed(1) : 0;
-                return `Summary: Total Assessments: ${total}, Completed: ${completed}, Average Score: ${avgScore}`;
-            } else if (msg.toLowerCase().includes('risk')) {
-                const risks = appData.assessments.filter(a => a.issues > 0);
-                if (risks.length > 0) {
-                    return `Risks detected in ${risks.length} assessment(s): ${risks.map(r => r.area).join(', ')}.`;
-                } else {
-                    return 'No major risks detected in current assessments.';
-                }
-            } else if (msg.toLowerCase().includes('improve')) {
-                const lowScores = appData.assessments.filter(a => a.score < 70);
-                if (lowScores.length > 0) {
-                    return `Improvement needed in: ${lowScores.map(l => l.area).join(', ')}.`;
-                } else {
-                    return 'All assessments are performing well. Keep up the good work!';
-                }
-            }
-            // Fallback: show latest assessment details
-            if (appData.assessments.length > 0) {
-                const latest = appData.assessments[appData.assessments.length - 1];
-                return `Latest Assessment: ${latest.area}, Status: ${latest.status}, Score: ${latest.score}, Owner: ${latest.owner}`;
-            }
-            return 'No assessment data available. Please add assessments to get started.';
-        }
-        
-        function refreshPhaseAIInsights() {
-            // Example AI-driven summary for phases
-            const phaseData = [100, 85, 60, 30, 10];
-            const phaseNames = ['Due Diligence', 'Knowledge Acquisition', 'Shadow Phase', 'Stabilization', 'Steady Support'];
-            const completed = phaseNames.filter((_, i) => phaseData[i] === 100);
-            const currentIdx = phaseData.findIndex(p => p < 100);
-            const currentPhase = currentIdx !== -1 ? phaseNames[currentIdx] : 'All phases complete';
-            let aiMsg = '';
-            if (completed.length === 0) {
-                aiMsg = 'Project is at the initial phase. Due Diligence is underway.';
-            } else if (completed.length === phaseNames.length) {
-                aiMsg = 'Congratulations! All transition phases are complete.';
-            } else {
-                aiMsg = `Completed: ${completed.join(', ') || 'None'}<br>Current Phase: <strong>${currentPhase}</strong> (${phaseData[currentIdx]}% complete)`;
-                if (currentPhase === 'Due Diligence') {
-                    aiMsg += '<br>AI Suggestion: Focus on gathering all required documentation and stakeholder alignment.';
-                } else if (currentPhase === 'Knowledge Acquisition') {
-                    aiMsg += '<br>AI Suggestion: Schedule key training sessions and knowledge transfers.';
-                } else if (currentPhase === 'Shadow Phase') {
-                    aiMsg += '<br>AI Suggestion: Ensure shadowing activities are tracked and feedback is collected.';
-                } else if (currentPhase === 'Stabilization') {
-                    aiMsg += '<br>AI Suggestion: Monitor system performance and address open issues promptly.';
-                } else if (currentPhase === 'Steady Support') {
-                    aiMsg += '<br>AI Suggestion: Maintain high support standards and review client feedback regularly.';
-                }
-            }
-            document.getElementById('aiPhaseInsights').innerHTML = aiMsg;
         }
     </script>
 </body>
