@@ -55,8 +55,6 @@
     <div class="container">
         <div class="sidebar">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="font-size: 14px;">Cognizant Neuro AI Transition Platform</h2>
-                <button class="btn" onclick="logout()" style="padding: 5px 10px; font-size: 12px; background: #dc3545;">Logout</button>
             </div>
             <div id="userInfo" style="margin-bottom: 15px; padding: 10px; background: #34495e; border-radius: 4px; font-size: 12px;"></div>
             <div class="nav-item active" onclick="showModule('dashboard')">Dashboard</div>
@@ -68,24 +66,26 @@
             <div class="nav-item" onclick="showModule('reports')">Reports</div>
             <div class="nav-item" onclick="showModule('client-survey')">Client Survey</div>
             <div class="nav-item" onclick="showModule('api-endpoints')">API Endpoints</div>
-            <div class="nav-item" onclick="showModule('data-cleaning')">Data Cleaning</div>
         </div>
-        
         <div class="main">
             <!-- Dashboard Module -->
             <div id="dashboard" class="module active">
                 <div class="dashboard-header" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-bottom: 24px;">
                     <!-- Phase Progress Card -->
                     <div class="card" style="flex: 1 1 320px; min-width: 320px; max-width: 400px;">
-                        <h3>Transition Phases Progress</h3>
+                        <h3>Transition Progress Overview</h3>
                         <canvas id="phaseChart" height="180"></canvas>
                     </div>
                     <!-- AI Insights Card -->
                     <div class="card" style="flex: 2 1 400px; min-width: 340px;">
-                        <h3>AI Insights</h3>
+                        <h3>AI-Powered Project Insights</h3>
                         <div id="aiPhaseInsights" style="font-size: 1.1em; color: #333; margin-bottom: 10px;"></div>
                         <button class="btn" onclick="refreshPhaseAIInsights()">Refresh Insights</button>
                     </div>
+                </div>
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>Welcome to the Cognizant Neuro AI Transition Platform</h3>
+                    <p>This dashboard provides a real-time overview of your project’s transition journey. Track progress across all phases, review AI-generated recommendations, and stay informed to ensure a smooth and successful transition.</p>
                 </div>
                 <div class="stats-grid">
                 </div>
@@ -1541,6 +1541,7 @@
         // Reports functions
         function generateWSR() { alert('Generating Weekly Status Report...'); }
         function scheduleWSR() { 
+            
             showModal(`
                 <h3>Schedule WSR</h3>
                 <div class="form-group">
